@@ -4,7 +4,16 @@ const funcionariosService = require("../services/funcionariosService")
 exports.mostrarFuncionarios = async (req, res) => {
     try{
         const funcionarios = await funcionariosService.mostrar()
-        res.status(200).json(funcionarios)
+
+        const funcionariosFormatados = funcionarios.map(funcionarios  => {
+            return {
+                ...funcionarios.toObject(),
+                id: funcionarios._id,
+                _id: undefined
+            }
+        })
+
+        res.status(200).json(funcionariosFormatados)
     } catch (erro){
         res.status(500).json({erro: "Erro ao mostrar funcionarios", detalhes: erro.message})
     }
